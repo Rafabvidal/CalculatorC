@@ -1,5 +1,6 @@
 //Rafaela Vidal- Conversao base 10 para base 2- 29/08/2024 - 7:50
 //Rafaela Vidal - Conversao base 10 para base 8- 29/08/2024- 16:26
+//Rafaela Vidal - Conversao base 10 para base 16- 29/08/2024- 17:17
 
 /*
 Construa uma calculadora programador didática (didática significa que deve ser mostrado os passos na tela das operações efetuadas),  implementada na linguagem C, que tenha as seguintes conversões
@@ -22,9 +23,10 @@ typedef struct node{
 } node;
 
 void empilhar(node **head, int num);
-int imprimirPilha(node *head);
+void imprimirPilha(node *head);
 void base2(int num);
 void base8(int num);
+void base16(int num);
 
 
 int main(void){
@@ -89,9 +91,42 @@ void empilhar(node **head, int num){
 }
 
 
-int imprimirPilha(node *head){
+void imprimirPilha(node *head){
   while (head!=NULL){
     printf("%d", head->num);
+    head=head->prox;
+  }
+}
+
+void imprimirhexa(node *head){
+  char hexa;
+  while (head!=NULL){
+    if (head->num>=10){
+      switch (head->num){
+        case 10:
+          hexa = 'A';
+          break;
+        case 11:
+          hexa = 'B';
+          break;
+        case 12:
+          hexa = 'C';
+          break;
+        case 13:
+          hexa = 'D';
+          break;
+        case 14:
+          hexa = 'E';
+          break;
+        case 15:
+          hexa = 'F';
+          break;
+      }
+      printf("%c", hexa);
+    }
+    else{
+      printf("%d", head->num);
+    }
     head=head->prox;
   }
 }
@@ -152,29 +187,29 @@ void base16(int num){
     divisao=num/16;
     resto=num%16;
     
-
     if (resto>=10 && resto<=15){
+      switch (resto) {
+        case 10:
+          hexa = 'A';
+          break;
+        case 11:
+          hexa = 'B';
+          break;
+        case 12:
+          hexa = 'C';
+          break;
+        case 13:
+          hexa = 'D';
+          break;
+        case 14:
+          hexa = 'E';
+          break;
+        case 15:
+          hexa = 'F';
+          break;
+      }
       
-      if (resto==10){
-        hexa='A';
-      }
-      else if (resto ==11){
-        hexa='B';
-      }
-      else if (resto ==12){
-        hexa='c';
-      }
-      else if (resto ==13){
-        hexa='D';
-      }
-      else if (resto ==14){
-        hexa='E';
-      }
-      else if (resto ==15){
-        hexa='F';
-      }
-      
-      printf("%d/16 = %d, resto = %d(%s)\n ", num, divisao, resto, hexa);
+      printf("%d/16 = %d, resto = %d(%c)\n ", num, divisao, resto, hexa);
       empilhar(&head, resto);
       num=divisao;
       
@@ -188,6 +223,6 @@ void base16(int num){
   }
 
   printf("\n%d na base 10 é igual a ", inicial);
-  imprimirPilha(head);
-  printf(" na base 8\n");
+  imprimirhexa(head);
+  printf(" na base 16\n\n");
 }
