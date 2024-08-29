@@ -1,5 +1,3 @@
-//Rafaaela Vidal- Imprementação do menu e da base 2 - 29/08/20224 - 7:49
-
 /*
 Construa uma calculadora programador didática (didática significa que deve ser mostrado os passos na tela das operações efetuadas),  implementada na linguagem C, que tenha as seguintes conversões
 1 - de base 10 para:
@@ -29,7 +27,7 @@ void empilhar(node **head, int num){
   }
 }
 
-void imprimirPilha(node *head){
+int imprimirPilha(node *head){
   while (head!=NULL){
     printf("%d", head->num);
     head=head->prox;
@@ -38,23 +36,27 @@ void imprimirPilha(node *head){
 
 void base2(int num){
   
-  int divisao=0, resto=0;
-
+  int divisao=0, resto=0, inicial=num;
   node *head=NULL;
+  
+
+  printf("\n");
 
   while(num!=0){
     
     divisao=num/2;
     resto=num%2;
     
-    printf("%d/2 = %d, resto=%d ", num, divisao, resto);
+    printf("%d/2 = %d, resto=%d\n ", num, divisao, resto);
 
     empilhar(&head, resto);
     
     num=divisao;
   }
-
-  imprimirPilha(head);  
+ 
+  printf("\n%d na base 10 é igual a ", inicial);
+  imprimirPilha(head);
+  printf(" na base 2\n");
   
 }
 
@@ -70,21 +72,21 @@ int main(void){
 
   while (menu==1 || menu ==2 || menu ==3 || menu ==4){
     
-    printf("Digite o número da operação desejada:\n\n1- Converter número de base 10 para base 2, base 8, base 16 ou código BCD\n2- Converter número de base 10 para base com sinal com 16 bits, (complemento a 2)\n3- Converter real em decimal para float e double, mostrando os respectivos bits de sinal , expoente, expoente com viés e fração\n4- Encerrar programa\n");
+    printf("\nDigite o número da operação desejada:\n\n1- Converter número de base 10 para base 2, base 8, base 16 ou código BCD\n2- Converter número de base 10 para base com sinal com 16 bits, (complemento a 2)\n3- Converter real em decimal para float e double, mostrando os respectivos bits de sinal , expoente, expoente com viés e fração\n4- Encerrar programa\n");
     
     scanf("%d", &menu);
 
     if (menu==1){
       
-      printf("\nEscolha o número referente a base para a qual deseja converter:\n1- Base\n2- Base 8\n 3- Base 16\n4- Código BCD");
+      printf("\nEscolha o número referente a base para a qual deseja converter:\n1- Base 2\n2- Base 8\n 3- Base 16\n4- Código BCD\n");
       
       scanf("%d", &base);
       
       if(base==1){
+        
         printf("Digite o número que deseja converter:\n");
         scanf("%d", &num);
-
-      
+        base2(num);
       }
       else if(base==2){
         
