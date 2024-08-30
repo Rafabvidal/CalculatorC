@@ -1,6 +1,7 @@
 //Rafaela Vidal- Conversao base 10 para base 2- 29/08/2024 - 7:50
 //Rafaela Vidal - Conversao base 10 para base 8- 29/08/2024- 16:26
 //Rafaela Vidal - Conversao base 10 para base 16- 29/08/2024- 17:17
+//Rafaela Vidal - Conversao base 10 para codigo BCD- 30/08/2024 - 11:15
 
 /*
 Construa uma calculadora programador didática (didática significa que deve ser mostrado os passos na tela das operações efetuadas),  implementada na linguagem C, que tenha as seguintes conversões
@@ -27,6 +28,8 @@ void imprimirPilha(node *head);
 void base2(int num);
 void base8(int num);
 void base16(int num);
+void codigobcd (int num);
+int decprabin (int digito);
 
 
 int main(void){
@@ -45,26 +48,22 @@ int main(void){
     if (menu==1){
       
       printf("\nEscolha o número referente a base para a qual deseja converter:\n1- Base 2\n2- Base 8\n3- Base 16\n4- Código BCD\n");
-      
       scanf("%d", &base);
+
+      printf("\nDigite o número que deseja converter:\n");
+      scanf("%d", &num);
       
       if(base==1){
-        printf("\nDigite o número que deseja converter:\n");
-        scanf("%d", &num);
         base2(num);
       }
       else if(base==2){
-        printf("\nDigite o número que deseja converter:\n");
-        scanf("%d", &num);
         base8(num);
       }
       else if(base==3){
-        printf("\nDigite o número que deseja converter:\n");
-        scanf("%d", &num);
         base16(num);
       }
       else if(base==4){
-        
+        codigobcd (num);
       }
     }
     else if (menu==2){
@@ -211,18 +210,48 @@ void base16(int num){
       
       printf("%d/16 = %d, resto = %d(%c)\n ", num, divisao, resto, hexa);
       empilhar(&head, resto);
-      num=divisao;
-      
+      num=divisao;  
     }
     else{
       printf("%d/16 = %d, resto=%d\n ", num, divisao, resto);
       empilhar(&head, resto);
       num=divisao;
     }
-    
   }
-
   printf("\n%d na base 10 é igual a ", inicial);
   imprimirhexa(head);
   printf(" na base 16\n\n");
+}
+
+
+void codigobcd (int num){
+
+  int digito;
+  node *head = NULL;
+
+  printf("\n%d na base 10 é igual a ", num);
+
+  while (num > 0) {
+      digito = num % 10; 
+      empilhar(&head, decprabin(digito));
+      num /= 10; 
+  }
+
+  while (head != NULL) {
+      printf("%04d ", head->num);
+      head = head->prox;
+  }
+  printf("em código BCD\n");
+}
+
+
+int decprabin (int digito){
+  int binario = 0, posicao = 1;
+
+  while (digito > 0) {
+      binario += (digito % 2) * posicao;
+      digito /= 2;
+      posicao *= 10;
+  }
+  return binario;
 }
