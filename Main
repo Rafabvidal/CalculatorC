@@ -4,6 +4,7 @@
 //Conversao base 10 para base 16- 29/08/2024- 17:17
 //Conversao base 10 para codigo BCD- 30/08/2024 - 11:15
 //Conversão base 10 para base com sinal com 16 bits, (complemento a 2) - 30/08/2024 18:21
+// converter real em decimal para float e double - 30/08/2024 19:22
 
 /*
 Construa uma calculadora programador didática (didática significa que deve ser mostrado os passos na tela das operações efetuadas),  implementada na linguagem C, que tenha as seguintes conversões
@@ -19,6 +20,7 @@ d) código BCD
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 typedef struct node{
   int num;
@@ -33,11 +35,17 @@ void base16(int num);
 void codigobcd (int num);
 int decprabin (int digito);
 void complementoDois(int num);
+void printBits(size_t const size, void const * const ptr);
+void conversaoFloat(float num);
+void conversaoDouble(double num);
+
 
 
 int main(void){
 
   int menu=1, base=0, num=0;
+  float fnum;
+  double dnum;
   node *head=NULL;
   
   printf("Calculadora didática em C\n\n");
@@ -75,7 +83,13 @@ int main(void){
       complementoDois(num);
     }
     else if (menu==3){
+      printf("Digite um número real para converter em float e double: ");
+      scanf("%f", &fnum);
 
+      dnum = (double)fnum;
+
+      conversaoFloat(fnum);
+      conversaoDouble(dnum);
     }
     else if (menu==4){
       break;
@@ -261,10 +275,11 @@ int decprabin (int digito){
   return binario;
 }
 
+
 void complementoDois(int num) {
     unsigned short int resultado;
 
-    
+
     if (num < 0) {
         resultado = (unsigned short int)(~(-num) + 1);
     } else {
@@ -278,3 +293,59 @@ void complementoDois(int num) {
     }
     printf("\n");
 }
+
+void printBits(size_t const size, void const * const ptr) {
+  unsigned char *b = (unsigned char*) ptr;
+  unsigned char byte;
+  int i, j;
+
+  for (i = size-1; i >= 0; i--) {
+      for (j = 7; j >= 0; j--) {
+          byte = (b[i] >> j) & 1;
+          printf("%u", byte);
+      }
+  }
+  puts("");
+}
+
+
+void conversaoFloat(float num) {
+  
+  uint32_t bits = *(uint32_t*)&num;
+
+  printf("\nAnalisando float:\n");
+
+  printf("Bits: ");
+  printBits(sizeof(bits), &bits);
+
+  int sign = (bits >> 31) & 1;
+  printf("Sinal: %d\n", sign);
+
+  int exponent = (bits >> 23) & 0xFF;
+  printf("Expoente (com viés): %d\n", exponent);
+  printf("Expoente (real): %d\n", exponent - 127);
+
+  int mantissa = bits & 0x7FFFFF;
+  printf("Fração: %d\n", mantissa);
+}
+
+
+void conversaoDouble(double num) {
+  uint64_t bits = *(uint64_t*)&num;
+
+  printf("\nAnalisando double:\n");
+
+  printf("Bits: ");
+  printBits(sizeof(bits), &bits);
+
+  int sign = (bits >> 63) & 1;
+  printf("Sinal: %d\n", sign);
+
+  int exponent = (bits >> 52) & 0x7FF;
+  printf("Expoente (com viés): %d\n", exponent);
+  printf("Expoente (real): %d\n", exponent - 1023);
+
+  uint64_t mantissa = bits & 0xFFFFFFFFFFFFF;
+  printf("Fração: %llu\n", mantissa);
+}
+
