@@ -1,7 +1,9 @@
-//Rafaela Vidal- Conversao base 10 para base 2- 29/08/2024 - 7:50
-//Rafaela Vidal - Conversao base 10 para base 8- 29/08/2024- 16:26
-//Rafaela Vidal - Conversao base 10 para base 16- 29/08/2024- 17:17
-//Rafaela Vidal - Conversao base 10 para codigo BCD- 30/08/2024 - 11:15
+//Rafaela Brasileiro Vidal - rbv2
+//Conversao base 10 para base 2- 29/08/2024 - 7:50
+//Conversao base 10 para base 8- 29/08/2024- 16:26
+//Conversao base 10 para base 16- 29/08/2024- 17:17
+//Conversao base 10 para codigo BCD- 30/08/2024 - 11:15
+//Conversão base 10 para base com sinal com 16 bits, (complemento a 2) - 30/08/2024 18:21
 
 /*
 Construa uma calculadora programador didática (didática significa que deve ser mostrado os passos na tela das operações efetuadas),  implementada na linguagem C, que tenha as seguintes conversões
@@ -30,6 +32,7 @@ void base8(int num);
 void base16(int num);
 void codigobcd (int num);
 int decprabin (int digito);
+void complementoDois(int num);
 
 
 int main(void){
@@ -67,7 +70,9 @@ int main(void){
       }
     }
     else if (menu==2){
-
+      printf("\nDigite o número que deseja converter:\n");
+      scanf("%d", &num);
+      complementoDois(num);
     }
     else if (menu==3){
 
@@ -254,4 +259,22 @@ int decprabin (int digito){
       posicao *= 10;
   }
   return binario;
+}
+
+void complementoDois(int num) {
+    unsigned short int resultado;
+
+    
+    if (num < 0) {
+        resultado = (unsigned short int)(~(-num) + 1);
+    } else {
+        resultado = (unsigned short int)num;
+    }
+
+    
+    printf("O complemento a 2 de %d em 16 bits é: ", num);
+    for (int i = 15; i >= 0; i--) {
+        printf("%d", (resultado >> i) & 1);
+    }
+    printf("\n");
 }
